@@ -41,9 +41,7 @@ else {
         urlParams.set('webhook',Webhook.value)
         urlParams.set('content',Content.value)
 
-        
-        
-        URL.href = window.location.origin + window.location.pathname + urlParams.toString()
+        URL.href = window.location.origin + window.location.pathname + '?' + urlParams.toString()
         URL.innerText = URL.href
     }
 
