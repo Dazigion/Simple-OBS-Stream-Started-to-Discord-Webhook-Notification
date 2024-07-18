@@ -1,0 +1,72 @@
+<html><head>
+
+    <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const WebhookURL = urlParams.get("webhook")
+    const Content = urlParams.get("content")
+    
+    window.addEventListener('obsStreamingStarted', function(event) {
+        fetch(
+        WebhookURL,
+            {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({content:urlParams.get(Content)})
+            })
+    })
+    </script>
+
+    <script>
+window.onload = function () {
+    const urlParams = new URLSearchParams(window.location.search);
+
+// Remove if OBS exists
+
+if (window.obsstudio) {
+    document.body.innerHTML = ''
+}
+else {
+    let Webhook = document.querySelector('input[name=Webhook]')
+    let Content = document.querySelector('textarea[name=Content]')
+
+    let URL = document.getElementById('link')
+
+    document.querySelector('button').onclick = function (params) {
+        navigator.clipboard.writeText(URL.href)
+    }
+
+    function update() {
+        urlParams.set('webhook',Webhook.value)
+        urlParams.set('content',Content.value)
+
+        
+        
+        URL.href = window.location.origin + window.location.pathname + urlParams.toString()
+        URL.innerText = URL.href
+    }
+
+    Webhook.oninput = update
+    Content.oninput = update
+}
+}
+</script>
+</head><body>
+<div class="form">
+
+<label>Insert Webhook</label>
+<input name="Webhook" type="text" placeholder="https://...">
+
+
+<br><br>
+<label>Insert Message Content</label>
+<textarea name="Content" placeholder="&lt;@&amp;123456789012&gt; is live!" style="width: 247px; height: 149px;"></textarea>
+
+</div>
+
+<label>Auto Generated Link to paste</label>
+<a id="link" href=""></a>
+<button id="copy">Copy</button>
+    
+</body></html>
